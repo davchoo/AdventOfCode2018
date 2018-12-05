@@ -3,38 +3,37 @@ from days import days
 
 
 def reduce(data):
-    new_data = []
     while True:
+        previous_length = len(data)
         for i, unit in enumerate(data):
-            if i + 1 < len(data) and unit is not None and unit.lower() == data[i + 1].lower() and (unit.isupper() and data[i + 1].islower() or unit.islower() and data[i + 1].isupper()):
-                data[i] = None
-                data[i + 1] = None
-        new_data = [data for data in data if data is not None]
-        if len(data) == len(new_data):
-            break
-        data = new_data
-    return data
+            if i + 1 < len(data):  # Next unit is outside polymer
+                if unit is not None:  # Skip if already eliminated
+                    next_unit = data[i + 1]
+                    if unit.lower() == next_unit.lower() and unit != next_unit:  # Same unit, but different polarity
+                        data[i] = None
+                        data[i + 1] = None
+        data = [d for d in data if d is not None]
+        if previous_length == len(data):
+            return data
 
 
 def day5(submit_answer=False):
     data = get_data(day=5, year=2018)
-    answer1 = 0
-    answer2 = None
 
-    answer1 = len(reduce(list(data)))
+    reduced_length = len(reduce(list(data)))
 
-    all_chars = set(data.lower())
-    new_length = {}
-    for char in all_chars:
+    all_units = set(data.lower())
+    new_reduced_lengths = {}
+    for char in all_units:
         new_data = [c for c in data if c.lower() != char]
-        new_length[char] = len(reduce(new_data))
+        new_reduced_lengths[char] = len(reduce(new_data))
 
-    answer2 = min(new_length.items(), key=lambda x: x[1])
+    fully_reduced = min(new_reduced_lengths.items(), key=lambda x: x[1])[1]
 
     if submit_answer:
-        submit1(answer1, day=5, year=2018)
-        submit2(answer2, day=4, year=2018)
-    return answer1, answer2
+        submit1(reduced_length, day=5, year=2018)
+        submit2(fully_reduced, day=4, year=2018)
+    return reduced_length, fully_reduced
 
 
 days[5] = day5

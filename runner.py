@@ -6,8 +6,10 @@ import termcolor
 import itertools
 import threading
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from aocd import AOC_TZ
+
+import time
 
 from days import days
 from day_1_2018 import day1
@@ -21,13 +23,13 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Solve Advent of Code Problems')
     parser.add_argument("--answers", action="store_true", help="Print answers for each day")
     parser.add_argument("--days", type=int, nargs="+", help="days to run. Default is to run all")
-    # parser.add_argument("--timed", action="store_true", help="Time how long it takes to get the answer for each day")
+    parser.add_argument("--timed", action="store_true", help="Time how long it takes to get the answer for each day")
     parser.add_argument("--submit", action="store_true", help="Submit answers with session token")
     parser.add_argument("--session", type=str, help="Advent of Code session token to retrieve input and submit "
                                                     "answers")
     # parser.add_argument("--sequential", action="store_true", help="Run each day one after the other")
 
-    args = parser.parse_args(["--answers", "--days", "5"])
+    args = parser.parse_args(["--answers", "--timed"])
 
     if args.submit and (args.days is None or len(args.days) > 1):
         termcolor.cprint(
@@ -35,7 +37,7 @@ def parse_args():
         exit(-1)
 
     if args.days is None:
-        args.days = list(range(1, 5))
+        args.days = list(range(1, 6))
 
     if max(args.days) > 25 or min(args.days) < 1:
         termcolor.cprint(
@@ -76,11 +78,19 @@ def main():
         spinning_bar_thread = threading.Thread(target=spinning_bar, name="Spinning Bar", args=(day, stop_spinning_bar))
         spinning_bar_thread.start()
 
+        start = time.perf_counter()
+
         part1, part2 = days[day](args.submit)
+
+        end = time.perf_counter()
+        end_time = datetime(1, 1, 1) + timedelta(seconds=(end - start))
 
         stop_spinning_bar.set()
         spinning_bar_thread.join()
+
         print(f"\rDay {day}:")
+        if args.timed:
+            print(f"\r\tTime: {end_time:%H:%M:%S.%f}")
         print(f"\r\tPart 1: {part1}")
         print(f"\r\tPart 2: {part2}\n")
 
