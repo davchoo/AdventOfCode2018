@@ -32,7 +32,7 @@ def day5(submit_answer=False):
 
     if submit_answer:
         submit1(reduced_length, day=5, year=2018)
-        submit2(fully_reduced, day=4, year=2018)
+        submit2(fully_reduced, day=5, year=2018)
     return reduced_length, fully_reduced
 
 
