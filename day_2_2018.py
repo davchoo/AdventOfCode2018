@@ -1,6 +1,8 @@
 from aocd import get_data, submit1, submit2
 from days import days
-import itertools
+
+from collections import Counter
+from itertools import compress
 
 
 def day2(submit_answer=False):
@@ -8,39 +10,23 @@ def day2(submit_answer=False):
     doubles = 0
     triples = 0
     for box_id in data:
-        box_id = list(box_id)
-        unique_chars = set(box_id)
-        already_double = False
-        already_triple = False
-        for char in unique_chars:
-            count = box_id.count(char)
-            if count == 2 and not already_double:
-                doubles += 1
-                already_double = True
-            if count == 3 and not already_triple:
-                triples += 1
-                already_triple = True
+        counts = Counter(box_id).values()
+        if 2 in counts:
+            doubles += 1
+        if 3 in counts:
+            triples += 1
     checksum = doubles * triples
 
     common = None
     
     for a in data:
         for b in data:
-            diffs = 0
-            diff_pos = 0
-            i = 0
-            for pair in zip(a, b):
-                char_a, char_b = pair
-                if char_a != char_b:
-                    diffs += 1
-                    diff_pos = i
-                    if diffs > 1:
-                        break
-                i += 1
-            if diffs == 1:
-                common = list(a)
-                del common[diff_pos]
-                common = "".join(common)
+            similar = [char_a == char_b for char_a, char_b in zip(a, b)]
+            if similar.count(False) == 1:  # Only 1 differing character
+                common = "".join(list(compress(a, similar)))
+                break
+        if common is not None:
+            break
 
     if submit_answer:
         submit1(checksum, day=2, year=2018)
