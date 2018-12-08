@@ -19,6 +19,7 @@ from day_4_2018 import day4
 from day_5_2018 import day5
 from day_6_2018 import day6
 from day_7_2018 import day7
+from day_8_2018 import day8
 
 
 def parse_args():
@@ -31,7 +32,7 @@ def parse_args():
                                                     "answers")
     # parser.add_argument("--sequential", action="store_true", help="Run each day one after the other")
 
-    args = parser.parse_args(["--answers", "--timed", "--days", "7"])
+    args = parser.parse_args(["--answers", "--timed", "--days", "8"])
 
     if args.submit and (args.days is None or len(args.days) > 1):
         termcolor.cprint(
@@ -39,7 +40,7 @@ def parse_args():
         exit(-1)
 
     if args.days is None:
-        args.days = list(range(1, 8))
+        args.days = list(range(1, 9))
 
     if max(args.days) > 25 or min(args.days) < 1:
         termcolor.cprint(
