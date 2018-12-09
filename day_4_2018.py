@@ -1,9 +1,9 @@
 from aocd import get_data, submit1, submit2
-from days import days
 import re
 import collections
 import itertools
 from operator import itemgetter
+
 
 def day4(submit_answer=False):
     data = sorted(get_data(day=4, year=2018).split("\n"))
@@ -43,6 +43,3 @@ def day4(submit_answer=False):
         submit1(answer1, day=4, year=2018)
         submit2(answer2, day=4, year=2018)
     return answer1, answer2
-
-
-days[4] = day4

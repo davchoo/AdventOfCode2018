@@ -1,5 +1,4 @@
 from aocd import get_data, submit
-from days import days
 
 import collections
 import itertools
@@ -47,5 +46,3 @@ def day8(submit_answer=False):
         submit(answer2, 2, day=8, year=2018)
     return sum_metadata, answer2
 
-
-days[8] = day8

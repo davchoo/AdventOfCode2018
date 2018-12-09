@@ -1,5 +1,4 @@
 from aocd import get_data, submit1, submit2
-from days import days
 
 import collections
 import re
@@ -73,6 +72,3 @@ def day7(submit_answer=False):
         submit1(completion_order, day=7, year=2018)
         submit2(time_elapsed, day=7, year=2018)
     return completion_order, time_elapsed
-
-
-days[7] = day7

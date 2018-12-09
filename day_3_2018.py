@@ -1,5 +1,4 @@
 from aocd import get_data, submit1, submit2
-from days import days
 import re
 import collections
 import itertools
@@ -43,6 +42,3 @@ def day3(submit_answer=False):
         submit1(overlap_area, day=3, year=2018)
         submit2(none_overlap, day=3, year=2018)
     return overlap_area, none_overlap
-
-
-days[3] = day3

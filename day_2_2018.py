@@ -1,5 +1,4 @@
 from aocd import get_data, submit1, submit2
-from days import days
 
 from collections import Counter
 from itertools import compress
@@ -33,5 +32,3 @@ def day2(submit_answer=False):
         submit2(common, day=2, year=2018)
     return checksum, common
 
-
-days[2] = day2

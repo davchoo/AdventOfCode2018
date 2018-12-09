@@ -1,5 +1,4 @@
 from aocd import get_data, submit1, submit2
-from days import days
 
 
 def reduce(data):
@@ -34,6 +33,3 @@ def day5(submit_answer=False):
         submit1(reduced_length, day=5, year=2018)
         submit2(fully_reduced, day=5, year=2018)
     return reduced_length, fully_reduced
-
-
-days[5] = day5

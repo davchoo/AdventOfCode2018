@@ -12,19 +12,10 @@ from aocd import AOC_TZ
 import time
 
 from days import days
-from day_1_2018 import day1
-from day_2_2018 import day2
-from day_3_2018 import day3
-from day_4_2018 import day4
-from day_5_2018 import day5
-from day_6_2018 import day6
-from day_7_2018 import day7
-from day_8_2018 import day8
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Solve Advent of Code Problems')
-    parser.add_argument("--answers", action="store_true", help="Print answers for each day")
     parser.add_argument("--days", type=int, nargs="+", help="days to run. Default is to run all")
     parser.add_argument("--timed", action="store_true", help="Time how long it takes to get the answer for each day")
     parser.add_argument("--submit", action="store_true", help="Submit answers with session token")
@@ -32,7 +23,7 @@ def parse_args():
                                                     "answers")
     # parser.add_argument("--sequential", action="store_true", help="Run each day one after the other")
 
-    args = parser.parse_args(["--answers", "--timed", "--days", "8"])
+    args = parser.parse_args()
 
     if args.submit and (args.days is None or len(args.days) > 1):
         termcolor.cprint(

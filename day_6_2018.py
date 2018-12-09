@@ -1,9 +1,9 @@
 from aocd import get_data, submit1, submit2
-from days import days
 
 import collections
 import re
 import string
+
 
 def day6(submit_answer=False):
     data = get_data(day=6, year=2018).split("\n")
@@ -76,6 +76,3 @@ def day6(submit_answer=False):
         submit1(max_area, day=6, year=2018)
         submit2(total_safe_area, day=6, year=2018)
     return max_area, total_safe_area
-
-
-days[6] = day6
