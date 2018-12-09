@@ -5,49 +5,37 @@ import collections
 import re
 import string
 
+
 def day7(submit_answer=False):
     data = get_data(day=7, year=2018).split("\n")
 
     regex = re.compile(r"tep (.)")
-    answer1 = 0
-    answer2 = 0
-
     dependencies = collections.defaultdict(list)
-    dependencies2 = collections.defaultdict(list)
-    steps = set()
-    next_step = set()
+    reverse_dependencies = collections.defaultdict(list)
+    all_dependencies = set()
 
     for dep in data:
-        first, then = regex.findall(dep)
-        steps.add(first)
-        next_step.add(then)
-        dependencies[then].append(first)
-        dependencies2[first].append(then)
+        dependency, dependent = regex.findall(dep)
+        all_dependencies.add(dependent)
+        dependencies[dependent].append(dependency)
+        reverse_dependencies[dependency].append(dependent)
 
-    no_deps = [step for step in dependencies2.keys() if step not in next_step]
-
-    no_deps.sort()
-
+    zero_dependencies = [step for step in reverse_dependencies.keys() if step not in all_dependencies]
     order = []
-
-    available = list(no_deps)
+    available = list(zero_dependencies)
 
     while len(available) > 0:
         available.sort()
         current = available.pop(0)
         order.append(current)
-        for dependent in dependencies2[current]:
-            fulfilled = True
-            for dependency in dependencies[dependent]:
-                if dependency not in order:
-                    fulfilled = False
-                    break
-            if fulfilled:
+        for dependent in reverse_dependencies[current]:
+            # If all dependencies are fulfilled
+            if all(dependency in order for dependency in dependencies[dependent]):
                 available.append(dependent)
 
-    answer1 = "".join(order)
+    completion_order = "".join(order)
 
-    available = no_deps
+    available = zero_dependencies
     order = []
 
     workers = [(".", 0)] * 5
@@ -59,43 +47,32 @@ def day7(submit_answer=False):
             if time <= 0:
                 if current != ".":
                     order.append(current)
-                    for dependent in dependencies2[current]:
-                        fulfilled = True
-                        for dependency in dependencies[dependent]:
-                            if dependency not in order:
-                                fulfilled = False
-                                break
-                        if fulfilled:
+                    for dependent in reverse_dependencies[current]:
+                        # If all dependencies are fulfilled
+                        if all(dependency in order for dependency in dependencies[dependent]):
                             available.append(dependent)
 
-        for i, (current, time) in enumerate(workers):
-            if time <= 0:
+        for i, (job, time) in enumerate(workers):
+            if time <= 0:  # Give them a new job
                 available.sort()
                 if len(available) > 0:
-                    new = available.pop(0)
-                    workers[i] = (new, string.ascii_uppercase.index(new) + 61)
+                    job = available.pop(0)
+                    time = string.ascii_uppercase.index(job) + 61
                 else:
-                    workers[i] = (".", 0)
-        for i, (job, time) in enumerate(workers):
+                    job = "."
+                    time = 0
             workers[i] = (job, time - 1)
 
-        have_jobs = False
-        total_time_left = 0
-        for job, time in workers:
-            if job != ".":
-                total_time_left += time
-                have_jobs = True
+        have_jobs = any(job != "." for job, time in workers)
         if not have_jobs and len(available) == 0:
             break
         else:
             time_elapsed += 1
 
-    answer2 = time_elapsed
-
     if submit_answer:
-        submit1(answer1, day=7, year=2018)
-        #submit2(answer2, day=7, year=2018)
-    return answer1, answer2
+        submit1(completion_order, day=7, year=2018)
+        submit2(time_elapsed, day=7, year=2018)
+    return completion_order, time_elapsed
 
 
 days[7] = day7
