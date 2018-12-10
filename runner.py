@@ -31,7 +31,7 @@ def parse_args():
         exit(-1)
 
     if args.days is None:
-        args.days = list(range(1, 9))
+        args.days = list(range(1, 11))
 
     if max(args.days) > 25 or min(args.days) < 1:
         termcolor.cprint(
