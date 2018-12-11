@@ -57,7 +57,7 @@ def main():
     print("David's Advent of Code solver")
 
     args.days.sort()
-
+    start = time.perf_counter()
     for day in args.days:
         if day not in days:
             aoc_now = datetime.now(tz=AOC_TZ)
@@ -72,21 +72,26 @@ def main():
         spinning_bar_thread = threading.Thread(target=spinning_bar, name="Spinning Bar", args=(day, stop_spinning_bar))
         spinning_bar_thread.start()
 
-        start = time.perf_counter()
+        start_day = time.perf_counter()
 
         part1, part2 = days[day](args.submit)
 
-        end = time.perf_counter()
-        end_time = datetime(1, 1, 1) + timedelta(seconds=(end - start))
+        end_day = time.perf_counter()
+        total_day_time = datetime(1, 1, 1) + timedelta(seconds=(end_day - start_day))
 
         stop_spinning_bar.set()
         spinning_bar_thread.join()
 
         print(f"\rDay {day}:")
         if args.timed:
-            print(f"\r\tTime: {end_time:%H:%M:%S.%f}")
+            print(f"\r\tTime: {total_day_time:%H:%M:%S.%f}")
         print(f"\r\tPart 1: {part1}")
         print(f"\r\tPart 2: {part2}\n")
+    end = time.perf_counter()
+
+    total_time = datetime(1, 1, 1) + timedelta(seconds=(end - start))
+    if args.timed:
+        print(f"\rTime: {total_time:%H:%M:%S.%f}")
 
 
 if __name__ == "__main__":
