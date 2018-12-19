@@ -1,6 +1,5 @@
 from aocd import get_data, submit
 
-import itertools
 import collections
 import re
 
@@ -90,24 +89,14 @@ def eqrr(registers, a, b, c):
 def day16(submit_answer=False):
     data = get_data(day=16, year=2018).split("\n")
     answer1 = 0
-    answer2 = 0
 
-    opcodes = {"addr": addr,
-               "addi": addi,
-               "mulr": mulr,
-               "muli": muli,
-               "banr": banr,
-               "bani": bani,
-               "borr": borr,
-               "bori": bori,
-               "setr": setr,
-               "seti": seti,
-               "gtir": gtir,
-               "gtri": gtri,
-               "gtrr": gtrr,
-               "eqir": eqir,
-               "eqri": eqri,
-               "eqrr": eqrr}
+    opcodes = {"addr": addr, "addi": addi,
+               "mulr": mulr, "muli": muli,
+               "banr": banr, "bani": bani,
+               "borr": borr, "bori": bori,
+               "setr": setr, "seti": seti,
+               "gtir": gtir, "gtri": gtri, "gtrr": gtrr,
+               "eqir": eqir, "eqri": eqri, "eqrr": eqrr}
 
     states = []
 
@@ -162,7 +151,6 @@ def day16(submit_answer=False):
         opcode_map[opcode](registers, *args)
 
     answer2 = registers[0]
-
 
     if submit_answer:
         submit(answer1, 1, day=16, year=2018)
